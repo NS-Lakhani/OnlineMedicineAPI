@@ -9,16 +9,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.model.Category;
-import com.service.CategoryServiceImpl;
+import com.service.CategoryService;
 
 @Path("/category")
 public class CategoryResource {
 
-		CategoryServiceImpl service;
+		CategoryService service;
 		
 		
 		public CategoryResource() {
-				service = new CategoryServiceImpl();
+				service = new CategoryService();
 		}
 
 
