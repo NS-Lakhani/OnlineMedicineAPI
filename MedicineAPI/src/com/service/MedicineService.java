@@ -48,4 +48,12 @@ public class MedicineService {
 				
 			return category;
 		}
+
+		public List<String> getAllProductsBySearchText(String searchText) throws SQLException 
+		{
+			List<String> productList = new ArrayList<>();
+			productList = dao.getAllProductsBySearchText(searchText);
+			
+			return productList;
+		}
 }

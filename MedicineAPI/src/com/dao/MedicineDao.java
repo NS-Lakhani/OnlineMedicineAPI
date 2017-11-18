@@ -167,4 +167,35 @@ public class MedicineDao {
 				}
 				return category;
 			}
+
+			public List<String> getAllProductsBySearchText(String searchText) throws SQLException 
+			{
+				List<String> productList = new ArrayList<>();
+				try{
+						conn = DBConnection.getConnection();
+						String sql = "SELECT PR_NAME FROM PRODUCT_MASTER WHERE PR_NAME LIKE ?";
+						ps = conn.prepareStatement(sql);
+						ps.setString(1, '%' + searchText + '%');
+						rs = ps.executeQuery();
+						
+						while (rs.next())
+						{
+							productList.add(rs.getString(1));
+						}	
+				}
+				catch(SQLException e)
+				{
+						e.printStackTrace();
+				}
+				catch(Exception e)
+				{
+						e.printStackTrace();
+				}
+				finally
+				{
+					if (conn != null)
+						conn.close();
+				}
+				return productList;
+			}
 }

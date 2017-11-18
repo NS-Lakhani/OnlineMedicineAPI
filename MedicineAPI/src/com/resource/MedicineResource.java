@@ -67,4 +67,15 @@ public class MedicineResource {
 					
 				return category;
 			}
+			
+			@GET
+			@Path("/products/search/{searchText}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public List<String> getAllProductsBySearchText(@PathParam("searchText") String searchText) throws SQLException
+			{
+					List<String> productList = new ArrayList<>();
+					productList = medicineService.getAllProductsBySearchText(searchText);
+					
+					return productList;
+			}
 }
