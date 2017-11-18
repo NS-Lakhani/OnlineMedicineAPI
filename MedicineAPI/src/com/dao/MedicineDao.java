@@ -22,7 +22,7 @@ public class MedicineDao {
 				List<Product> productList = new ArrayList<>();
 				try{
 						conn = DBConnection.getConnection();
-						String sql = "SELECT * FROM PRODUCT_MASTER";
+						String sql = "SELECT * FROM PRODUCT_MASTER ORDER BY PR_ID";
 						ps = conn.prepareStatement(sql);
 						rs = ps.executeQuery();
 						
@@ -64,7 +64,7 @@ public class MedicineDao {
 				
 				try{
 						conn = DBConnection.getConnection();
-						String sql = "SELECT * FROM CATEGORY_MASTER";
+						String sql = "SELECT * FROM CATEGORY_MASTER ORDER BY CAT_ID";
 						ps = conn.prepareStatement(sql);
 						rs = ps.executeQuery();
 						
@@ -93,4 +93,78 @@ public class MedicineDao {
 				return list;
 		}
 
+		public Product getProduct(int id) throws SQLException 
+		{
+				Product product = new Product();
+				try{
+					conn = DBConnection.getConnection();
+					String sql = "SELECT * FROM PRODUCT_MASTER WHERE PR_ID = ?";
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1, id);
+					rs = ps.executeQuery();
+				
+					while (rs.next())
+					{
+						product = new Product();
+						product.setId(rs.getInt(1));
+						product.setProductCode(rs.getInt(2));
+						product.setProductName(rs.getString(3));
+						product.setProductCategoryId(rs.getInt(4));
+						product.setProductPrice(rs.getDouble(5));
+						product.setProductImagePath(rs.getString(6));
+						product.setProductDescription(rs.getString(7));
+						product.setProductStatus(rs.getBoolean(8));
+						product.setProductPrescriptionReq(rs.getBoolean(9));
+						product.setProductTabStrips(rs.getInt(10));
+					}	
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					if (conn != null)
+						conn.close();
+				}
+				return product;
+			}
+		
+			public Category getCategory(int id) throws SQLException 
+			{
+				Category category = new Category();
+				
+				try{
+					conn = DBConnection.getConnection();
+					String sql = "SELECT * FROM CATEGORY_MASTER WHERE CAT_ID = ?";
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1,id);
+					rs = ps.executeQuery();
+					
+					if (rs.next())
+					{
+						category = new Category();
+						category.setId(rs.getInt(1));
+						category.setCategoryName(rs.getString(2));
+					}
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					if (conn != null)
+						conn.close();
+				}
+				return category;
+			}
 }

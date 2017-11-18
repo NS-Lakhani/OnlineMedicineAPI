@@ -32,4 +32,20 @@ public class MedicineService {
 				
 				return categoryList;
 		}
+
+		public Product getProduct(int id) throws SQLException 
+		{
+				Product product = new Product();
+				product = dao.getProduct(id);
+				
+				return product;
+		}
+		
+		public Category getCategory(int id) throws SQLException
+		{
+			Category category = new Category();
+			category = dao.getCategory(id);
+				
+			return category;
+		}
 }

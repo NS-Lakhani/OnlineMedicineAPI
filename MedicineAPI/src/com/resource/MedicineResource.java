@@ -38,10 +38,12 @@ public class MedicineResource {
 			@GET
 			@Path("/products/{id}")
 			@Produces(MediaType.APPLICATION_JSON)
-			public Product getProduct(@PathParam("product") String id)
+			public Product getProduct(@PathParam("id") int id) throws SQLException
 			{
+					Product product = new Product();
+					product = medicineService.getProduct(id);
 					
-					return new Product();
+					return product;
 			}
 		
 			@GET
@@ -53,5 +55,16 @@ public class MedicineResource {
 					categoryList = medicineService.getAllCategories();
 					
 					return categoryList;
+			}
+			
+			@GET
+			@Path("/categories/{id}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public Category getCategory(@PathParam("id") int id) throws SQLException
+			{
+				Category category = new Category();
+				category = medicineService.getCategory(id);
+					
+				return category;
 			}
 }
