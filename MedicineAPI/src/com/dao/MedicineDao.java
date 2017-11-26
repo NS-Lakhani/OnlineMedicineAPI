@@ -198,4 +198,39 @@ public class MedicineDao {
 				}
 				return productList;
 			}
+			
+			public boolean addProduct(int code, String name, int catId, double price, String image, String desc, boolean status, boolean presReq, int tabStrips) throws SQLException
+			{
+				int res = 0;
+				
+				try{
+					conn = DBConnection.getConnection();
+					String sql = "INSERT INTO PRODUCT_MASTER (PR_CODE, PR_NAME, PR_CATEGORY_ID, PR_PRICE, PR_IMAGE, PR_DESC, PR_STATUS, PR_PRESCRIPTION_REQ, PR_TAB_STRIPS) VALUES(?,?,?,?,?,?,?,?,?)";
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1, code);
+					ps.setString(2, name);
+					ps.setInt(3, catId);
+					ps.setDouble(4, price);
+					ps.setString(5, image);
+					ps.setString(6, desc);
+					ps.setBoolean(7, status);
+					ps.setBoolean(8, presReq);
+					ps.setInt(9, tabStrips);
+					
+					res = ps.executeUpdate();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					if (conn != null)
+						conn.close();
+				}
+				if (res == 1)
+					return true;
+				else
+					return false;				
+			}
 }

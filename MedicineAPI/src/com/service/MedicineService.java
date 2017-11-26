@@ -56,4 +56,10 @@ public class MedicineService {
 			
 			return productList;
 		}
+		
+		public boolean addProduct(int code, String name, int catId, double price, String image, String desc, boolean status, boolean presReq, int tabStrips) throws SQLException
+		{
+			boolean result = dao.addProduct(code, name, catId, price, image, desc, status, presReq, tabStrips);
+			return result;	
+		}
 }

@@ -4,11 +4,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.model.Category;
 import com.model.Product;
@@ -77,5 +81,25 @@ public class MedicineResource {
 					productList = medicineService.getAllProductsBySearchText(searchText);
 					
 					return productList;
+			}
+			
+			@POST
+			@Path("/products")
+			@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+			public Response addProduct(@FormParam("code") int code,
+																@FormParam("name") String name,
+																@FormParam("catId") int catId,
+																@FormParam("price") double price,
+																@FormParam("image") String image,
+																@FormParam("desc") String desc,
+																@FormParam("status") boolean status,
+																@FormParam("presReq") boolean presReq,
+																@FormParam("tabStrips") int tabStrips) throws SQLException
+			{
+					boolean result = medicineService.addProduct(code, name, catId, price, image, desc, status, presReq, tabStrips);
+					if (result)
+						return Response.status(200).entity("Product added successfully").build();
+					else
+						return Response.status(200).entity("something went wrong").build();
 			}
 }
