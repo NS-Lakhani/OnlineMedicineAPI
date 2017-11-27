@@ -1,5 +1,6 @@
 package com.resource;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,25 @@ public class MedicineResource {
 					boolean result = medicineService.addProduct(code, name, catId, price, image, desc, status, presReq, tabStrips);
 					if (result)
 						return Response.status(200).entity("Product added successfully").build();
+					else
+						return Response.status(200).entity("something went wrong").build();
+			}
+			
+			
+			@POST
+			@Path("/products/order")
+			@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+			public Response placeOrder(@FormParam("orderNo") int orderNo,
+																@FormParam("userId") int userId,
+																@FormParam("productId") int productId,
+																@FormParam("orderDate") Date orderDate,
+																@FormParam("orderQty") int orderQty,
+																@FormParam("orderPrice") double orderPrice) throws SQLException
+			{
+					double total = orderQty * orderPrice;
+					boolean result = medicineService.placeOrder(orderNo, userId, productId, orderDate, orderQty, orderPrice, total);
+					if (result)
+						return Response.status(200).entity("Order placed successfully").build();
 					else
 						return Response.status(200).entity("something went wrong").build();
 			}

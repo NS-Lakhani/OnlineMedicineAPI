@@ -1,11 +1,13 @@
 package com.service;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dao.MedicineDao;
 import com.model.Category;
+import com.model.Order;
 import com.model.Product;
 
 public class MedicineService {
@@ -59,7 +61,21 @@ public class MedicineService {
 		
 		public boolean addProduct(int code, String name, int catId, double price, String image, String desc, boolean status, boolean presReq, int tabStrips) throws SQLException
 		{
-			boolean result = dao.addProduct(code, name, catId, price, image, desc, status, presReq, tabStrips);
-			return result;	
+				boolean result = dao.addProduct(code, name, catId, price, image, desc, status, presReq, tabStrips);
+				return result;	
+		}
+
+		public boolean placeOrder(int orderNo, int userId, int productId, Date orderDate, int orderQty, double orderPrice, double orderTotal) throws SQLException 
+		{
+				boolean result = dao.placeOrder(orderNo, userId, productId, orderDate, orderQty, orderPrice, orderTotal);
+				return result;
+		}
+		
+		public List<Order> getAllOrders() throws SQLException 
+		{
+			List<Order> orderList = new ArrayList<>();
+			orderList = dao.getAllOrders();
+			
+			return orderList;
 		}
 }

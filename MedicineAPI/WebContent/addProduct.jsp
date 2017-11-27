@@ -30,7 +30,7 @@
                 </tr>
                 
                 <tr>
-                                <td>Image: </td>
+                                <td>Image Path: </td>
                                 <td><input type="text" name="image" id="image" /></td>
                 </tr>
                 
@@ -42,20 +42,20 @@
                  <tr>
                                 <td>Status: </td>
                                 <td>
-                                                <input type="radio" name="status"  value="Available"/>
-                                                <input type="radio" name="status" value="Not Available"/>
+                                                <input type="radio" name="status"  value="Available"/>Available
+                                                <input type="radio" name="status" value="Not Available"/>Not Available
                                 </td>
                 </tr>
                 <tr>
                                 <td>Prescription required: </td>
                                 <td>
-                                                <input type="radio" name="presReq"  value="Yes"/>
-                                                <input type="radio" name="presReq" value="No"/>
+                                                <input type="radio" name="presReq"  value="Yes"/>Required
+                                                <input type="radio" name="presReq" value="No"/>Not Required
                                 </td>
                 </tr>
                 <tr>
                                 <td>Tab strips: </td>
-                                <td><input type="text" name="tabStrips" value="tabStrips"/></td>
+                                <td><input type="number" name="tabStrips"/></td>
                 </tr>
                 <tr>
                                 <td><input type="submit" value="add"/></td>

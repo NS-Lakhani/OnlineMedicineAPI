@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import com.connection.DBConnection;
 import com.model.Category;
+import com.model.Order;
 import com.model.Product;
 
 public class MedicineDao {
@@ -232,5 +234,79 @@ public class MedicineDao {
 					return true;
 				else
 					return false;				
+			}
+
+			public boolean placeOrder(int orderNo, int userId, int productId, Date orderDate, int orderQty, double orderPrice, double orderTotal) throws SQLException 
+			{
+					int res = 0;
+					
+					try{
+						conn = DBConnection.getConnection();
+						String sql = "INSERT INTO ORDER_MASTER (OM_ORDER_NUMBER, OM_USER_ID, OM_PROUDCT_ID, OM_DATE, OM_QUANTITY, OM_UNIT_PRICE, OM_TOTAL) VALUES(?,?,?,?,?,?,?)";
+						ps = conn.prepareStatement(sql);
+						ps.setInt(1, orderNo);
+						ps.setInt(2, userId);
+						ps.setInt(3, productId);
+						ps.setDate(4, orderDate);
+						ps.setInt(5, orderQty);
+						ps.setDouble(6, orderPrice);
+						ps.setDouble(7, orderTotal);
+						
+						res = ps.executeUpdate();
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					finally
+					{
+						if (conn != null)
+							conn.close();
+					}
+					if (res == 1)
+						return true;
+					else
+						return false;
+			}
+			
+			public List<Order> getAllOrders() throws SQLException 
+			{
+				List<Order> list = new ArrayList<>();
+				
+				try{
+					conn = DBConnection.getConnection();
+					String sql = "SELECT * FROM ORDER_MASTER ORDER BY OM_ID";
+					ps = conn.prepareStatement(sql);
+					rs = ps.executeQuery();
+					
+					while (rs.next())
+					{
+						Order order = new Order();
+						order.setOrderId(rs.getInt(1));
+						order.setOrderNumber(rs.getInt(2));
+						order.setUserId(rs.getInt(3));
+						order.setProductId(rs.getInt(4));
+						order.setOrderDate(rs.getDate(5));
+						order.setOrderQuantity(rs.getInt(6));
+						order.setOrderUnitPrice(rs.getDouble(7));
+						order.setOrderTotal(rs.getDouble(8));
+						
+						list.add(order);
+					}	
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					if (conn != null)
+						conn.close();
+				}
+				return list;
 			}
 }
