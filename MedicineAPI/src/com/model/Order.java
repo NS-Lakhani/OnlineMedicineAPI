@@ -1,19 +1,18 @@
 package com.model;
 
-import java.sql.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
 public class Order {
 
 		private int orderId;
-		private int orderNumber;
+		private String orderNumber;
 		private int userId;
 		private int productId;
-		private Date orderDate;
+		private Timestamp orderDate;
 		private int orderQuantity;
 		private double orderUnitPrice;
 		private double orderTotal;
-		
+	
 		public int getOrderId() {
 			return orderId;
 		}
@@ -22,22 +21,22 @@ public class Order {
 			this.orderId = orderId;
 		}
 		
-		public int getOrderNumber() {
+		public String getOrderNumber() {
 			return orderNumber;
 		}
-		
-		public void setOrderNumber(int orderNumber) {
+
+		public void setOrderNumber(String orderNumber) {
 			this.orderNumber = orderNumber;
 		}
-			
-		public Date getOrderDate() {
+
+		public Timestamp getOrderDate() {
 			return orderDate;
 		}
-		
-		public void setOrderDate(Date orderDate) {
+
+		public void setOrderDate(Timestamp orderDate) {
 			this.orderDate = orderDate;
 		}
-		
+
 		public int getOrderQuantity() {
 			return orderQuantity;
 		}
@@ -77,4 +76,9 @@ public class Order {
 		public void setProductId(int productId) {
 			this.productId = productId;
 		}
+
+		public Order() {
+			super();
+		}		
+		
 }

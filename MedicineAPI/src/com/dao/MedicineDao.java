@@ -1,10 +1,10 @@
 package com.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class MedicineDao {
 		private ResultSet rs = null;
 		private PreparedStatement ps = null;
 		
-		public List<Product> getAllProducts() throws SQLException 
+		public List<Product> getAllProducts() throws SQLException, Exception 
 		{
 				List<Product> productList = new ArrayList<>();
 				try{
@@ -46,11 +46,11 @@ public class MedicineDao {
 				}
 				catch(SQLException e)
 				{
-						e.printStackTrace();
+						throw e;
 				}
 				catch(Exception e)
 				{
-						e.printStackTrace();
+						throw e;
 				}
 				finally
 				{
@@ -60,7 +60,7 @@ public class MedicineDao {
 				return productList;
 		}
 	
-		public List<Category> getAllCategories() throws SQLException 
+		public List<Category> getAllCategories() throws Exception 
 		{
 				List<Category> list = new ArrayList<>();
 				
@@ -81,11 +81,11 @@ public class MedicineDao {
 				}
 				catch(SQLException e)
 				{
-						e.printStackTrace();
+						throw e;
 				}
 				catch(Exception e)
 				{
-						e.printStackTrace();
+						throw e;
 				}
 				finally
 				{
@@ -95,7 +95,7 @@ public class MedicineDao {
 				return list;
 		}
 
-		public Product getProduct(int id) throws SQLException 
+		public Product getProduct(int id) throws Exception 
 		{
 				Product product = new Product();
 				try{
@@ -105,7 +105,7 @@ public class MedicineDao {
 					ps.setInt(1, id);
 					rs = ps.executeQuery();
 				
-					while (rs.next())
+					if (rs.next())
 					{
 						product = new Product();
 						product.setId(rs.getInt(1));
@@ -118,15 +118,21 @@ public class MedicineDao {
 						product.setProductStatus(rs.getBoolean(8));
 						product.setProductPrescriptionReq(rs.getBoolean(9));
 						product.setProductTabStrips(rs.getInt(10));
-					}	
+						product.setRecordAvailable(true);
+					}
+					else
+					{
+						product = new Product();
+						product.setRecordAvailable(false);
+					}
 				}
 				catch(SQLException e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				catch(Exception e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				finally
 				{
@@ -136,10 +142,10 @@ public class MedicineDao {
 				return product;
 			}
 		
-			public Category getCategory(int id) throws SQLException 
+			public Category getCategory(int id) throws Exception 
 			{
 				Category category = new Category();
-				
+
 				try{
 					conn = DBConnection.getConnection();
 					String sql = "SELECT * FROM CATEGORY_MASTER WHERE CAT_ID = ?";
@@ -152,15 +158,21 @@ public class MedicineDao {
 						category = new Category();
 						category.setId(rs.getInt(1));
 						category.setCategoryName(rs.getString(2));
+						category.setRecordAvailable(true);
+					}
+					else
+					{
+							category = new Category();
+							category.setRecordAvailable(false);
 					}
 				}
 				catch(SQLException e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				catch(Exception e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				finally
 				{
@@ -170,7 +182,7 @@ public class MedicineDao {
 				return category;
 			}
 
-			public List<String> getAllProductsBySearchText(String searchText) throws SQLException 
+			public List<String> getAllProductsBySearchText(String searchText) throws Exception 
 			{
 				List<String> productList = new ArrayList<>();
 				try{
@@ -187,11 +199,11 @@ public class MedicineDao {
 				}
 				catch(SQLException e)
 				{
-						e.printStackTrace();
+						throw e;
 				}
 				catch(Exception e)
 				{
-						e.printStackTrace();
+						throw e;
 				}
 				finally
 				{
@@ -201,7 +213,7 @@ public class MedicineDao {
 				return productList;
 			}
 			
-			public boolean addProduct(int code, String name, int catId, double price, String image, String desc, boolean status, boolean presReq, int tabStrips) throws SQLException
+			public boolean addProduct(int code, String name, int catId, double price, String image, String desc, boolean status, boolean presReq, int tabStrips) throws Exception
 			{
 				int res = 0;
 				
@@ -221,9 +233,13 @@ public class MedicineDao {
 					
 					res = ps.executeUpdate();
 				}
+				catch(SQLException e)
+				{
+						throw e;
+				}
 				catch(Exception e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				finally
 				{
@@ -236,27 +252,31 @@ public class MedicineDao {
 					return false;				
 			}
 
-			public boolean placeOrder(int orderNo, int userId, int productId, Date orderDate, int orderQty, double orderPrice, double orderTotal) throws SQLException 
+			public boolean placeOrder(int orderNo, int userId, int productId, Timestamp orderDate, int orderQty, double orderPrice, double orderTotal) throws Exception 
 			{
 					int res = 0;
 					
 					try{
 						conn = DBConnection.getConnection();
-						String sql = "INSERT INTO ORDER_MASTER (OM_ORDER_NUMBER, OM_USER_ID, OM_PROUDCT_ID, OM_DATE, OM_QUANTITY, OM_UNIT_PRICE, OM_TOTAL) VALUES(?,?,?,?,?,?,?)";
+						String sql = "INSERT INTO ORDER_MASTER (OM_ORDER_NUMBER, OM_USER_ID, OM_PRODUCT_ID, OM_DATE, OM_QUANTITY, OM_UNIT_PRICE, OM_TOTAL) VALUES(?,?,?,?,?,?,?)";
 						ps = conn.prepareStatement(sql);
 						ps.setInt(1, orderNo);
 						ps.setInt(2, userId);
 						ps.setInt(3, productId);
-						ps.setDate(4, orderDate);
+						ps.setTimestamp(4, orderDate);
 						ps.setInt(5, orderQty);
 						ps.setDouble(6, orderPrice);
 						ps.setDouble(7, orderTotal);
 						
 						res = ps.executeUpdate();
 					}
+					catch(SQLException e)
+					{
+							throw e;
+					}
 					catch(Exception e)
 					{
-						e.printStackTrace();
+							throw e;
 					}
 					finally
 					{
@@ -269,7 +289,7 @@ public class MedicineDao {
 						return false;
 			}
 			
-			public List<Order> getAllOrders() throws SQLException 
+			public List<Order> getAllOrders() throws Exception 
 			{
 				List<Order> list = new ArrayList<>();
 				
@@ -283,10 +303,10 @@ public class MedicineDao {
 					{
 						Order order = new Order();
 						order.setOrderId(rs.getInt(1));
-						order.setOrderNumber(rs.getInt(2));
+						order.setOrderNumber(rs.getString(2));
 						order.setUserId(rs.getInt(3));
 						order.setProductId(rs.getInt(4));
-						order.setOrderDate(rs.getDate(5));
+						order.setOrderDate(rs.getTimestamp(5));
 						order.setOrderQuantity(rs.getInt(6));
 						order.setOrderUnitPrice(rs.getDouble(7));
 						order.setOrderTotal(rs.getDouble(8));
@@ -296,11 +316,11 @@ public class MedicineDao {
 				}
 				catch(SQLException e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				catch(Exception e)
 				{
-					e.printStackTrace();
+						throw e;
 				}
 				finally
 				{

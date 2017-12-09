@@ -13,6 +13,8 @@ public class Product {
 		private boolean productPrescriptionReq;
 		private int productTabStrips;
 		
+		private boolean recordAvailable;
+		
 		public int getId() {
 			return id;
 		}
@@ -91,5 +93,11 @@ public class Product {
 		}
 		public Product() {
 			super();
+		}
+		public boolean isRecordAvailable() {
+			return recordAvailable;
+		}
+		public void setRecordAvailable(boolean recordAvailable) {
+			this.recordAvailable = recordAvailable;
 		}	
 }
